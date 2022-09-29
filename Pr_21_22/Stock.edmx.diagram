@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d5cecdc1e1e6446abddad439ad1e4b6e" Name="Diagram1" ZoomLevel="74">
+        <EntityTypeShape EntityType="StockModel.InCome" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="StockModel.PriceTag" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="StockModel.ProductGroupDirectory" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="StockModel.Shipper" Width="1.5" PointX="5.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="StockModel.Sale" Width="1.5" PointX="5.25" PointY="6.625" IsExpanded="true" />
+        <AssociationConnector Association="StockModel.FK_InCome_PriceTag" ManuallyRouted="false" />
+        <AssociationConnector Association="StockModel.FK_PriceTag_ProductGroupDirectory" ManuallyRouted="false" />
+        <AssociationConnector Association="StockModel.FK_Sales_PriceTag" ManuallyRouted="false" />
+        <AssociationConnector Association="StockModel.FK_Shippers_PriceTag" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

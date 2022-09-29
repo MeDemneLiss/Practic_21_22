@@ -1,0 +1,343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище StockModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="InCome">
+          <Key>
+            <PropertyRef Name="InvoiceNumber" />
+          </Key>
+          <Property Name="InvoiceNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdProduct" Type="int" Nullable="false" />
+          <Property Name="QuantityInCome" Type="int" Nullable="false" />
+          <Property Name="DateInComing" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PriceTag">
+          <Key>
+            <PropertyRef Name="IdProduct" />
+          </Key>
+          <Property Name="IdProduct" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NameProduct" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IdGroup" Type="int" Nullable="false" />
+          <Property Name="UnitsOfMeterage" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="Price" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductGroupDirectory">
+          <Key>
+            <PropertyRef Name="IdGroup" />
+          </Key>
+          <Property Name="IdGroup" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NameGroup" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "Склад.dbo.Sales" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="Sales">
+          <Key>
+            <PropertyRef Name="IdCheck" />
+            <PropertyRef Name="IdProduct" />
+            <PropertyRef Name="QuantitySale" />
+            <PropertyRef Name="DateSales" />
+          </Key>
+          <Property Name="IdCheck" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdProduct" Type="int" Nullable="false" />
+          <Property Name="QuantitySale" Type="int" Nullable="false" />
+          <Property Name="DateSales" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Shippers">
+          <Key>
+            <PropertyRef Name="IdShipper" />
+          </Key>
+          <Property Name="IdShipper" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdProduct" Type="int" Nullable="false" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="Telephone" Type="nvarchar" MaxLength="11" />
+        </EntityType>
+        <Association Name="FK_InCome_PriceTag">
+          <End Role="PriceTag" Type="Self.PriceTag" Multiplicity="1" />
+          <End Role="InCome" Type="Self.InCome" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriceTag">
+              <PropertyRef Name="IdProduct" />
+            </Principal>
+            <Dependent Role="InCome">
+              <PropertyRef Name="IdProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PriceTag_ProductGroupDirectory">
+          <End Role="ProductGroupDirectory" Type="Self.ProductGroupDirectory" Multiplicity="1" />
+          <End Role="PriceTag" Type="Self.PriceTag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductGroupDirectory">
+              <PropertyRef Name="IdGroup" />
+            </Principal>
+            <Dependent Role="PriceTag">
+              <PropertyRef Name="IdGroup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sales_PriceTag">
+          <End Role="PriceTag" Type="Self.PriceTag" Multiplicity="1" />
+          <End Role="Sales" Type="Self.Sales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriceTag">
+              <PropertyRef Name="IdProduct" />
+            </Principal>
+            <Dependent Role="Sales">
+              <PropertyRef Name="IdProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Shippers_PriceTag">
+          <End Role="PriceTag" Type="Self.PriceTag" Multiplicity="1" />
+          <End Role="Shippers" Type="Self.Shippers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriceTag">
+              <PropertyRef Name="IdProduct" />
+            </Principal>
+            <Dependent Role="Shippers">
+              <PropertyRef Name="IdProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище StockModelContainer">
+          <EntitySet Name="InCome" EntityType="Self.InCome" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PriceTag" EntityType="Self.PriceTag" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductGroupDirectory" EntityType="Self.ProductGroupDirectory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Shippers" EntityType="Self.Shippers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sales" EntityType="Self.Sales" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Sales].[IdCheck] AS [IdCheck], 
+    [Sales].[IdProduct] AS [IdProduct], 
+    [Sales].[QuantitySale] AS [QuantitySale], 
+    [Sales].[DateSales] AS [DateSales]
+    FROM [dbo].[Sales] AS [Sales]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_InCome_PriceTag" Association="Self.FK_InCome_PriceTag">
+            <End Role="PriceTag" EntitySet="PriceTag" />
+            <End Role="InCome" EntitySet="InCome" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PriceTag_ProductGroupDirectory" Association="Self.FK_PriceTag_ProductGroupDirectory">
+            <End Role="ProductGroupDirectory" EntitySet="ProductGroupDirectory" />
+            <End Role="PriceTag" EntitySet="PriceTag" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sales_PriceTag" Association="Self.FK_Sales_PriceTag">
+            <End Role="PriceTag" EntitySet="PriceTag" />
+            <End Role="Sales" EntitySet="Sales" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Shippers_PriceTag" Association="Self.FK_Shippers_PriceTag">
+            <End Role="PriceTag" EntitySet="PriceTag" />
+            <End Role="Shippers" EntitySet="Shippers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StockModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="InCome">
+          <Key>
+            <PropertyRef Name="InvoiceNumber" />
+          </Key>
+          <Property Name="InvoiceNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdProduct" Type="Int32" Nullable="false" />
+          <Property Name="QuantityInCome" Type="Int32" Nullable="false" />
+          <Property Name="DateInComing" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="PriceTag" Relationship="Self.FK_InCome_PriceTag" FromRole="InCome" ToRole="PriceTag" />
+        </EntityType>
+        <EntityType Name="PriceTag">
+          <Key>
+            <PropertyRef Name="IdProduct" />
+          </Key>
+          <Property Name="IdProduct" Type="Int32" Nullable="false" />
+          <Property Name="NameProduct" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IdGroup" Type="Int32" Nullable="false" />
+          <Property Name="UnitsOfMeterage" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="InComes" Relationship="Self.FK_InCome_PriceTag" FromRole="PriceTag" ToRole="InCome" />
+          <NavigationProperty Name="ProductGroupDirectory" Relationship="Self.FK_PriceTag_ProductGroupDirectory" FromRole="PriceTag" ToRole="ProductGroupDirectory" />
+          <NavigationProperty Name="Sales" Relationship="Self.FK_Sales_PriceTag" FromRole="PriceTag" ToRole="Sales" />
+          <NavigationProperty Name="Shippers" Relationship="Self.FK_Shippers_PriceTag" FromRole="PriceTag" ToRole="Shippers" />
+        </EntityType>
+        <EntityType Name="ProductGroupDirectory">
+          <Key>
+            <PropertyRef Name="IdGroup" />
+          </Key>
+          <Property Name="IdGroup" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NameGroup" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PriceTags" Relationship="Self.FK_PriceTag_ProductGroupDirectory" FromRole="ProductGroupDirectory" ToRole="PriceTag" />
+        </EntityType>
+        <EntityType Name="Shipper">
+          <Key>
+            <PropertyRef Name="IdShipper" />
+          </Key>
+          <Property Name="IdShipper" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdProduct" Type="Int32" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Telephone" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PriceTag" Relationship="Self.FK_Shippers_PriceTag" FromRole="Shippers" ToRole="PriceTag" />
+        </EntityType>
+        <EntityType Name="Sale">
+          <Key>
+            <PropertyRef Name="IdCheck" />
+            <PropertyRef Name="IdProduct" />
+            <PropertyRef Name="QuantitySale" />
+            <PropertyRef Name="DateSales" />
+          </Key>
+          <Property Name="IdCheck" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdProduct" Type="Int32" Nullable="false" />
+          <Property Name="QuantitySale" Type="Int32" Nullable="false" />
+          <Property Name="DateSales" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="PriceTag" Relationship="Self.FK_Sales_PriceTag" FromRole="Sales" ToRole="PriceTag" />
+        </EntityType>
+        <Association Name="FK_InCome_PriceTag">
+          <End Role="PriceTag" Type="Self.PriceTag" Multiplicity="1" />
+          <End Role="InCome" Type="Self.InCome" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriceTag">
+              <PropertyRef Name="IdProduct" />
+            </Principal>
+            <Dependent Role="InCome">
+              <PropertyRef Name="IdProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PriceTag_ProductGroupDirectory">
+          <End Role="ProductGroupDirectory" Type="Self.ProductGroupDirectory" Multiplicity="1" />
+          <End Role="PriceTag" Type="Self.PriceTag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductGroupDirectory">
+              <PropertyRef Name="IdGroup" />
+            </Principal>
+            <Dependent Role="PriceTag">
+              <PropertyRef Name="IdGroup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sales_PriceTag">
+          <End Role="PriceTag" Type="Self.PriceTag" Multiplicity="1" />
+          <End Role="Sales" Type="Self.Sale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriceTag">
+              <PropertyRef Name="IdProduct" />
+            </Principal>
+            <Dependent Role="Sales">
+              <PropertyRef Name="IdProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Shippers_PriceTag">
+          <End Role="PriceTag" Type="Self.PriceTag" Multiplicity="1" />
+          <End Role="Shippers" Type="Self.Shipper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriceTag">
+              <PropertyRef Name="IdProduct" />
+            </Principal>
+            <Dependent Role="Shippers">
+              <PropertyRef Name="IdProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BaseStockEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="InComes" EntityType="Self.InCome" />
+          <EntitySet Name="PriceTags" EntityType="Self.PriceTag" />
+          <EntitySet Name="ProductGroupDirectories" EntityType="Self.ProductGroupDirectory" />
+          <EntitySet Name="Shippers" EntityType="Self.Shipper" />
+          <EntitySet Name="Sales" EntityType="Self.Sale" />
+          <AssociationSet Name="FK_InCome_PriceTag" Association="Self.FK_InCome_PriceTag">
+            <End Role="PriceTag" EntitySet="PriceTags" />
+            <End Role="InCome" EntitySet="InComes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PriceTag_ProductGroupDirectory" Association="Self.FK_PriceTag_ProductGroupDirectory">
+            <End Role="ProductGroupDirectory" EntitySet="ProductGroupDirectories" />
+            <End Role="PriceTag" EntitySet="PriceTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sales_PriceTag" Association="Self.FK_Sales_PriceTag">
+            <End Role="PriceTag" EntitySet="PriceTags" />
+            <End Role="Sales" EntitySet="Sales" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Shippers_PriceTag" Association="Self.FK_Shippers_PriceTag">
+            <End Role="PriceTag" EntitySet="PriceTags" />
+            <End Role="Shippers" EntitySet="Shippers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище StockModelContainer" CdmEntityContainer="BaseStockEntities">
+          <EntitySetMapping Name="InComes">
+            <EntityTypeMapping TypeName="StockModel.InCome">
+              <MappingFragment StoreEntitySet="InCome">
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+                <ScalarProperty Name="QuantityInCome" ColumnName="QuantityInCome" />
+                <ScalarProperty Name="DateInComing" ColumnName="DateInComing" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PriceTags">
+            <EntityTypeMapping TypeName="StockModel.PriceTag">
+              <MappingFragment StoreEntitySet="PriceTag">
+                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+                <ScalarProperty Name="NameProduct" ColumnName="NameProduct" />
+                <ScalarProperty Name="IdGroup" ColumnName="IdGroup" />
+                <ScalarProperty Name="UnitsOfMeterage" ColumnName="UnitsOfMeterage" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductGroupDirectories">
+            <EntityTypeMapping TypeName="StockModel.ProductGroupDirectory">
+              <MappingFragment StoreEntitySet="ProductGroupDirectory">
+                <ScalarProperty Name="IdGroup" ColumnName="IdGroup" />
+                <ScalarProperty Name="NameGroup" ColumnName="NameGroup" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Shippers">
+            <EntityTypeMapping TypeName="StockModel.Shipper">
+              <MappingFragment StoreEntitySet="Shippers">
+                <ScalarProperty Name="IdShipper" ColumnName="IdShipper" />
+                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sales">
+            <EntityTypeMapping TypeName="StockModel.Sale">
+              <MappingFragment StoreEntitySet="Sales">
+                <ScalarProperty Name="IdCheck" ColumnName="IdCheck" />
+                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+                <ScalarProperty Name="QuantitySale" ColumnName="QuantitySale" />
+                <ScalarProperty Name="DateSales" ColumnName="DateSales" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

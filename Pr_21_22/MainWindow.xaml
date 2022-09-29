@@ -1,0 +1,82 @@
+﻿<Window x:Class="Pr_21_22.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Pr_21_22"
+        mc:Ignorable="d"
+        Title="Практические работы 21-22" Height="456" Width="817" Loaded="Window_Loaded" ResizeMode="CanMinimize" >
+    <Grid>
+        <Menu Height="20" VerticalAlignment="Top">
+            <MenuItem Header="Файл" />
+            <MenuItem Header="Поиск" Click="Search_Click" />
+            <MenuItem Header="О программе" />
+            <MenuItem Width="584"/>
+            <MenuItem Header="Выход" Click="End_Click" />
+        </Menu>
+        <Grid Margin="0,20,0,0">
+            <TabControl>
+                <TabItem Header="Основная таблица">
+                    <Grid Background="White">
+                        <DataGrid Margin="10,10,10,108" BeginningEdit="Price_BeginningEdit" CellEditEnding="Price_CellEditEnding"  x:Name="productCatalog" IsReadOnly="True" AutoGenerateColumns="False" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Код товара" Binding="{Binding IdProduct}"/>
+                                <DataGridTextColumn Header="Наименование продукции" Binding="{Binding NameProduct}"/>
+                                <DataGridTextColumn Header="Название группы" Binding="{Binding ProductGroupDirectory.NameGroup}"/>
+                                <DataGridTextColumn Header="Ед. изметрения" Binding="{Binding UnitsOfMeterage}"/>
+                                <DataGridTextColumn Header="Цена" Binding="{Binding Price}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Button Content="Добавить запись" Click="AddRecord_Click" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top" Height="26" Width="128"/>
+                        <Button Content="Изменить запись" Click="ChangeRecord_Click" HorizontalAlignment="Left" Margin="171,300,0,0" VerticalAlignment="Top" Height="26" Width="128"/>
+                        <Button Content="Удалить запись" Click="DeleteRecord_Click" HorizontalAlignment="Left" Margin="330,300,0,0" VerticalAlignment="Top" Height="26" Width="128"/>
+                        <Button Content="Увеличить стоимость" HorizontalAlignment="Left" Margin="648,300,0,0" VerticalAlignment="Top" Height="26" Width="128" Click="IncreasePrice"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Справочники">
+                    <Grid Background="White">
+                        <DataGrid x:Name="GroupProduct" BeginningEdit="GroupProduct_BeginningEdit" CellEditEnding="GroupProduct_CellEditEnding" AutoGenerateColumns="False" Margin="10,10,506,254" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="№ группы" Binding="{Binding IdGroup}"/>
+                                <DataGridTextColumn Header="Наименнование группы " Binding="{Binding NameGroup}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <DataGrid x:Name="Income" BeginningEdit="InCome_BeginningEdit" CellEditEnding="InCome_CellEditEnding" Margin="340,10,10,254" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Номер накладной" Binding="{Binding InvoiceNumber}"/>
+                                <DataGridTextColumn Header="Код товара" Binding="{Binding PriceTag.NameProduct}"/>
+                                <DataGridTextColumn Header="Кол-во поступило" Binding="{Binding QuantityInCome}"/>
+                                <DataGridTextColumn Header="Дата поступления" Binding="{Binding DateInComing}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <DataGrid x:Name="Sale" BeginningEdit="Sale_BeginningEdit" CellEditEnding="Sale_CellEditEnding" Margin="10,191,408,65" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Номер чека" Binding="{Binding IdCheck}"/>
+                                <DataGridTextColumn Header="Код товара" Binding="{Binding PriceTag.NameProduct}"/>
+                                <DataGridTextColumn Header="Кол-во продано" Binding="{Binding QuantitySale}"/>
+                                <DataGridTextColumn Header="Дата продажи" Binding="{Binding DateSales}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <DataGrid x:Name="Post" BeginningEdit="Post_BeginningEdit" CellEditEnding="Post_CellEditEnding" Margin="408,191,10,65" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Код поставщика" Binding="{Binding IdShipper}"/>
+                                <DataGridTextColumn Header="Товар" Binding="{Binding PriceTag.NameProduct}"/>
+                                <DataGridTextColumn Header="Адрес" Binding="{Binding Address}"/>
+                                <DataGridTextColumn Header="Телефон" Binding="{Binding Telephone}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Кол-во Январь и Закончившиеся">
+                    <Grid>
+                        <DataGrid x:Name="january" Margin="38,10,453,128" >
+                        </DataGrid>
+                        <Button Content="Подсчёт" Margin="86,288,521,60" Click="JanuaryProduct_Click" />
+                        <DataGrid x:Name="nullProduct"  Margin="428,10,187,128" />
+                        <Button Content="Поиск заканчивающегося товара" Click="NullProduct" Margin="428,290,187,60"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</Window>

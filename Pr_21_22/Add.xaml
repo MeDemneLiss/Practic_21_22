@@ -1,0 +1,23 @@
+﻿<Window x:Class="Pr_21_22.Add"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Pr_21_22"
+        mc:Ignorable="d"
+        Title="Add" Height="308" Width="423" Loaded="Window_Loaded">
+    <Grid>
+        <TextBox x:Name="idProductT" HorizontalAlignment="Left" Margin="19,25,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" Height="24"/>
+        <TextBox Name="nameProductT" HorizontalAlignment="Left" Margin="19,63,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" Height="23"/>
+        <ComboBox Name="idGroupT"  HorizontalAlignment="Left" Margin="19,104,0,0" DisplayMemberPath="NameGroup" VerticalAlignment="Top" Width="120" Height="27"/>
+        <TextBox Name="unitsOfMeterageT" MaxLength="4" HorizontalAlignment="Left" Margin="19,144,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="25"/>
+        <TextBox Name="priceT" HorizontalAlignment="Left" Margin="19,179,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" Height="23"/>
+        <Label Margin="176,25,87,172" Content="- Код товара"></Label>
+        <Label Margin="176,63,73,135" Content="- Наименование товара"/>
+        <Label Content="- Наименование группы" Margin="176,104,87,86"/>
+        <Label Content="- Единицы измерения товара" Margin="176,144,46,51"/>
+        <Label Content="- Цена товара" Margin="176,179,87,16"/>
+        <Button Click="Add_Click" Content="Добавить" Margin="19,216,284,36"></Button>
+        <Button Click="End_Click" Content="Отмена" Margin="176,216,120,36"></Button>
+    </Grid>
+</Window>
